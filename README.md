@@ -151,13 +151,5 @@ python -m pytest
 ```
 
 ---
-
-## 6. Cumplimiento de criterios de evaluación (150 puntos)
-
-1. **Repositorio del proyecto en GitHub (15 pts):** Estructura modular separada por servicio (`calculadora_service/` e `historial_service/`), historial de commits claros por cada etapa y este `README.md` detallado.
-2. **Contenedor 1 — La aplicación (20 pts):** `calculadora_service/Dockerfile` basado en `python:3.13.2-slim` (versión fija, no `latest`), instalación de `requirements.txt`, `EXPOSE 8000` y `CMD ["python", "app.py"]`.
-3. **Contenedor 2 — Segundo servicio (15 pts):** `historial_service/Dockerfile` con rol de microservicio API de persistencia/auditoría, configurado mediante variables de entorno (`HISTORIAL_PORT`, `HISTORIAL_DATA_FILE`, `HISTORIAL_API_KEY`) y con volumen `/data` para persistir los registros.
-4. **Orquestación con Docker Compose (20 pts):** `docker-compose.yml` con ambos servicios (`calculadora-api` e `historial-api`), red propia `red-calculadora`, mapeo de puertos, inyección de variables (`env_file` y `environment`), volumen `historial_data` y `depends_on`.
-5. **Comunicación entre contenedores (35 pts):** Comunicación HTTP interna mediante el nombre del servicio `http://historial-api:5001` demostrada con la operación real de ida (`POST /calcular`) y vuelta (`GET /historial`).
 6. **Buenas prácticas y seguridad (15 pts):** Archivos `.dockerignore`, `.env` excluido del control de versiones, plantilla `.env.example` incluida y cero secretos en el código fuente.
 7. **Integración con el pipeline de CI (15 pts):** El workflow `.github/workflows/ci.yml` ejecuta las pruebas en matriz Python `3.12`/`3.13`, construye las imágenes con `docker compose build`, levanta los contenedores con `docker compose up -d` y verifica automáticamente la operación de ida y vuelta en cada `push` y `pull_request`.

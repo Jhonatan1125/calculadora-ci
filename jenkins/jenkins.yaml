@@ -1,0 +1,21 @@
+jenkins:
+  systemMessage: "Integracion Continua - Entrega Proyecto 2 (Escenario 5) | Jenkins LTS + Docker CLI"
+  numExecutors: 2
+  mode: NORMAL
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID:-admin}"
+          name: "Jhonatan"
+          password: "${JENKINS_ADMIN_PASSWORD:-cambiar_esta_clave}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: "${JENKINS_EXTERNAL_URL:-http://localhost:8080/}"

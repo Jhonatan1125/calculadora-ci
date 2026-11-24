@@ -1,5 +1,7 @@
 .git/
 .github/
+jenkins/
+Jenkinsfile
 __pycache__/
 *.pyc
 .pytest_cache/

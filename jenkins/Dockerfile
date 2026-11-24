@@ -6,7 +6,7 @@ USER root
 
 # Copiar cliente Docker CLI y plugins oficiales (compose y buildx) desde docker:cli
 COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
-COPY --from=docker-cli /usr/libexec/docker/cli-plugins/ /usr/libexec/docker/cli-plugins/
+COPY --from=docker-cli /usr/local/libexec/docker/cli-plugins/ /usr/local/libexec/docker/cli-plugins/
 
 # Evitar errores de 'dubious ownership' en repositorios montados con Git
 RUN git config --system --add safe.directory '*'

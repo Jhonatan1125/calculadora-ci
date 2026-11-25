@@ -2,9 +2,6 @@ jenkins:
   systemMessage: "Integracion Continua - Entrega Proyecto 2 (Escenario 5) | Jenkins LTS + Docker CLI"
   numExecutors: 2
   mode: NORMAL
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: true
   securityRealm:
     local:
       allowsSignup: false

@@ -3,7 +3,7 @@ def sumar(a, b):
 
 
 def restar(a, b):
-    return a + b  # Error intencional para validar deteccion automatica en Jenkins CI
+    return a - b
 
 
 def multiplicar(a, b):

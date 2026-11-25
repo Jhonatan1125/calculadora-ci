@@ -153,3 +153,19 @@ python -m pytest
 ---
 6. **Buenas prácticas y seguridad (15 pts):** Archivos `.dockerignore`, `.env` excluido del control de versiones, plantilla `.env.example` incluida y cero secretos en el código fuente.
 7. **Integración con el pipeline de CI (15 pts):** El workflow `.github/workflows/ci.yml` ejecuta las pruebas en matriz Python `3.12`/`3.13`, construye las imágenes con `docker compose build`, levanta los contenedores con `docker compose up -d` y verifica automáticamente la operación de ida y vuelta en cada `push` y `pull_request`.
+
+---
+
+## 6. Integración Continua con Jenkins (Entrega 2)
+
+El servidor Jenkins se ejecuta de forma reproducible en contenedor mediante `jenkins/docker-compose.yml` (imagen `jenkins/jenkins:lts-jdk21` con `docker:cli` para Docker CLI y Compose, volumen persistente `jenkins_home`, puertos `8080`/`50000` y configuración inicial como código en `jenkins/jenkins.yaml`).
+
+### Credenciales almacenadas en Jenkins
+- `github-credenciales` (*Username with password*): usuario y Personal Access Token para clonar el repositorio.
+- `historial-api-key` (*Secret text*): clave secreta compartida inyectada en tiempo de ejecución mediante `withCredentials` (nunca escrita en el código fuente).
+
+### Etapas del `Jenkinsfile`
+1. **Checkout:** descarga el código fuente desde GitHub (`Poll SCM` cada minuto `* * * * *` ante nuevos `push`).
+2. **Build:** inyecta `HISTORIAL_API_KEY` en `.env` temporal y construye las dos imágenes (`calculadora-api` e `historial-api`) con `docker compose build`.
+3. **Test:** ejecuta `pytest` dentro de un contenedor efímero `python:3.13.2-slim` (reporte JUnit) y corre `scripts/verificar_integracion.sh` para validar la comunicación HTTP de ida y vuelta por nombre de servicio (`http://historial-api:5001`).
+4. **Post (`always` / `success` / `failure`):** publica resultados JUnit, recopila logs, ejecuta `docker compose down -v --remove-orphans` y elimina los archivos temporales `.env` y `reporte-pruebas.xml`.
